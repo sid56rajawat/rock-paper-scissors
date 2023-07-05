@@ -1,67 +1,63 @@
 const CHOICES = ['rock','paper','scissors'];
+const RULES = ['rock beats scissors','paper beats rock','scissors beats paper'];
+const ROUNDS = 7;
 
 function getComputerChoice(){
     let i = Math.floor(Math.random() * 3);
     return CHOICES[i];
 }
 
-function playRound(playerSelection, computerSelection) {
-    let ans = `Nobody Wins! ${playerSelection} does not beat ${computerSelection}`;
-    if(playerSelection === "rock"){
-        if(computerSelection === "paper"){
-            ans = "You Lose! Paper beats Rock";
-        }
-        else if(computerSelection === "scissors"){
-            ans = "You Win! Rock beats Scissors";
-        }
-    }
-    else if(playerSelection === "paper"){
-        if(computerSelection === "rock"){
-            ans = "You Win! Paper beats Rock";
-        }
-        else if(computerSelection === "scissors"){
-            ans = "You Lose! Scissors beats Paper";
-        }
-    }
-    else if(playerSelection === "scissors"){
-        if(computerSelection === "rock"){
-            ans = "You Lose! Rock beats Scissors";
-        }
-        else if(computerSelection === "paper"){
-            ans = "You Win! Scissors beats Paper";
+function playRound(playerSelection,computerSelection){
+    if(playerSelection === computerSelection) return [`Nobody Wins! ${playerSelection} does not beat ${computerSelection}`,0];
+    ans =["",0];
+    for(let rule of RULES){
+        let playerIndex = rule.search(playerSelection);
+        let computerIndex = rule.search(computerSelection);
+
+        if(playerIndex !== -1 && computerIndex !== -1){
+            if(playerIndex < computerIndex){
+                ans[0] = "You Win! ";
+                ans[1] = 1;
+            }
+            else{
+                ans[0] = "You Lose! ";
+                ans[1] = -1;
+            }
+            ans[0] += rule;
         }
     }
-    else{
-        ans = "Invalid Player Choice!";
-    }
+    
     return ans;
 }
 
-function game(){
-    let rounds = 5, winCounter = 0;
-    while(rounds--){
-        if(winCounter > 2 || winCounter < -2) break;
+function isValidChoice(choice){
+    return CHOICES.findIndex(item => item === choice) === -1 ? false : true;
+}
 
-        console.log(`round ${5 - rounds}`);
+function game(){
+    let counter = ROUNDS, playerWins = 0, computerWins = 0;
+    while(counter--){
+        if(playerWins > (ROUNDS / 2) || computerWins > (ROUNDS / 2)) break;
+
+        console.log(`round ${ROUNDS - counter}`);
 
         let playerSelection = prompt("Enter your choice (rock/paper/scissors) : ");
         if(!playerSelection) break;
         playerSelection = playerSelection.toLowerCase();
-
+        if(!isValidChoice(playerSelection)){
+            counter++;
+            continue;
+        }
+        
         let computerSelection = getComputerChoice();
 
         let ans = playRound(playerSelection,computerSelection);
-        console.log(ans);
+        console.log(ans[0]);
 
-        if(ans.search("Nobody") != -1) continue;
-        if(ans.search("Invalid") != -1){
-            rounds++;
-            continue;
-        }
-        if(ans.search("Win") != -1) winCounter++;
-        else winCounter--;
+        if(ans[1] > 0) playerWins++;
+        else if(ans[1] < 0) computerWins++;
     }
-    let winner = winCounter === 0 ? "Nobody" : winCounter > 0 ? "Player" : "Computer";
+    let winner = playerWins === computerWins ? "Nobody" : playerWins > computerWins ? "Player" : "Computer";
     console.log("The final winner is " + winner);
 }
 
