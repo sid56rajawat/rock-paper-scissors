@@ -1,6 +1,5 @@
 const CHOICES = ['rock','paper','scissors'];
 const RULES = ['rock beats scissors','paper beats rock','scissors beats paper'];
-const ROUNDS = 7;
 
 function getComputerChoice(){
     let i = Math.floor(Math.random() * 3);
@@ -35,6 +34,7 @@ function isValidChoice(choice){
 }
 
 function game(){
+    const ROUNDS = prompt("Enter number of rounds : ",5);
     let counter = ROUNDS, playerWins = 0, computerWins = 0;
     while(counter--){
         if(playerWins > (ROUNDS / 2) || computerWins > (ROUNDS / 2)) break;
