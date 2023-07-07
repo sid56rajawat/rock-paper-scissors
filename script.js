@@ -53,7 +53,7 @@ function playRound(playerSelection,computerSelection){
 
 submitButton.addEventListener('click',() => {
     totalRounds = Number(document.querySelector('#rounds').value);
-    choicesDiv.style.display = "block";
+    if(totalRounds) choicesDiv.style.display = "block";
     output.innerText = "";
     roundsPlayed = 0;
     playerWins = 0;
