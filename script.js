@@ -44,16 +44,17 @@ function playRound(playerSelection,computerSelection){
     output.innerText += "\n" + ans;
 
     if(roundsPlayed >= totalRounds || playerWins > (totalRounds / 2) || computerWins > (totalRounds / 2)){
-        choicesDiv.style.display = "none";
+        choicesDiv.style.visibility = "hidden";
         let winner = playerWins === computerWins ? "Nobody" : playerWins > computerWins ? "Player" : "Computer";
-        output.innerText += `\nThe final winner is ${winner}!`;
+        output.innerText += `\n\nThe final winner is ${winner}!`;
     }
 
 }
 
 submitButton.addEventListener('click',() => {
     totalRounds = Number(document.querySelector('#rounds').value);
-    if(totalRounds) choicesDiv.style.display = "block";
+    if(totalRounds) choicesDiv.style.visibility = "visible";
+    else choicesDiv.style.visibility = "hidden";
     output.innerText = "";
     roundsPlayed = 0;
     playerWins = 0;
